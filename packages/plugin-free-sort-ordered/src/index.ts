@@ -41,7 +41,7 @@ const info = <const>{
       default: 700,
     },
     /** The colours of the boxes that are correct for the stimuli in order. */
-    box_correct: {
+    box_colours: {
       type: ParameterType.STRING,
       default: "#000000",
       array: true,
@@ -179,7 +179,7 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
       >`;
 
     // create boxes for each stimulus
-    const stim_order = this.jsPsych.randomization.shuffle(trial.box_correct);
+    const stim_order = this.jsPsych.randomization.shuffle(trial.box_colours);
     for (let i = 0; i < stimulus.length; i++) {
       box_container_html += `
         <div
@@ -355,7 +355,7 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
               const currentBoxColor = stim_order[boxIndex];
 
               // Get the correct color for this stimulus from the original array
-              const correctBoxColor = trial.box_correct[stimIndex];
+              const correctBoxColor = trial.box_colours[stimIndex];
 
               // Return true if the colors match (stimulus is in correct box)
               return currentBoxColor === correctBoxColor;
