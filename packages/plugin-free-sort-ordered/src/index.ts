@@ -40,6 +40,24 @@ const info = <const>{
       type: ParameterType.INT,
       default: 700,
     },
+    /** The parameters (type, height, width, colour) for each box. */
+    boxes: {
+      type: ParameterType.COMPLEX,
+      default: undefined,
+      array: true,
+    },
+    /** The heights of each boxe in pixels. */
+    box_heights: {
+      type: ParameterType.INT,
+      default: 100,
+      array: true,
+    },
+    /** The width of each boxe in pixels. */
+    box_widths: {
+      type: ParameterType.INT,
+      default: 100,
+      array: true,
+    },
     /** The colours of the boxes that are correct for the stimuli in order. */
     box_colours: {
       type: ParameterType.STRING,
@@ -155,6 +173,7 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
   trial(display_element: HTMLElement, trial: TrialType<Info>) {
     var start_time = performance.now();
     var stimulus = trial.stimulus;
+    var boxes = trial.boxes;
 
     // holding area
     const holding_area_html = `
@@ -178,14 +197,13 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
       style="position: relative; max-width: 80vw; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; margin: auto; padding: 20px;"
       >`;
 
-    // create boxes for each stimulus
-    const stim_order = this.jsPsych.randomization.shuffle(trial.box_colours);
-    for (let i = 0; i < stimulus.length; i++) {
+    const stim_order = this.jsPsych.randomization.shuffle(trial.boxes);
+    for (let i = 0; i < boxes.length; i++) {
       box_container_html += `
         <div
         id="jspsych-free-sort-ordered-box-${i}"
         class="jspsych-free-sort-ordered-box"
-        style="width: ${trial.box_widths[i]}px; height: ${trial.box_heights[i]}px; background-color: #FFFFFF; border: 2px solid ${stim_order[i]}; margin: ${trial.box_margin}px;"
+        style="width: ${boxes[i].width}px; height: ${boxes[i].height}px; background-color: #FFFFFF; border: 2px solid ${boxes[i].colour}; margin: ${trial.box_margin}px;"
         ></div>`;
     }
     box_container_html += "</div>";
@@ -215,7 +233,7 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
 
     // store locations of the boxes
     let boxCoordinates = [];
-    for (let i = 0; i < stimulus.length; i++) {
+    for (let i = 0; i < boxes.length; i++) {
       const box = document.getElementById(`jspsych-free-sort-ordered-box-${i}`);
       if (box) {
         const rect = box.getBoundingClientRect();
