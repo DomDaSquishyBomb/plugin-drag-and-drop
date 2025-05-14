@@ -185,7 +185,7 @@ class FreeSortOrderedPlugin implements JsPsychPlugin<Info> {
         <div
         id="jspsych-free-sort-ordered-box-${i}"
         class="jspsych-free-sort-ordered-box"
-        style="width: ${trial.stim_width}px; height: ${trial.stim_height}px; background-color: #FFFFFF; border: 2px solid ${stim_order[i]}; margin: ${trial.box_margin}px;"
+        style="width: ${trial.box_widths[i]}px; height: ${trial.box_heights[i]}px; background-color: #FFFFFF; border: 2px solid ${stim_order[i]}; margin: ${trial.box_margin}px;"
         ></div>`;
     }
     box_container_html += "</div>";
